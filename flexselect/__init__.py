@@ -1,8 +1,14 @@
 from itertools import chain
 import json
 
+from django import VERSION as DJANGO_VERSION
+
 from django.apps import apps
-from django.core.urlresolvers import reverse, resolve
+if DJANGO_VERSION < (2, 0, 0):
+    from django.core.urlresolvers import reverse, resolve
+else:
+    from django.urls import reverse, resolve
+     
 from django.forms.widgets import Select, SelectMultiple
 from django.utils.encoding import smart_text as smart_unicode
 from django.utils.safestring import mark_safe
@@ -214,3 +220,4 @@ class FlexSelectWidget(FlexBaseWidget, Select):
 class FlexSelectMultipleWidget(FlexBaseWidget, SelectMultiple):
     def __init__(self, *args, **kwargs):
         super(FlexSelectMultipleWidget, self).__init__(*args, **kwargs)
+ 

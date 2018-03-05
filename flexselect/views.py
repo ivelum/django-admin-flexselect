@@ -21,7 +21,7 @@ def field_changed(request):
     app_label, model_name, base_field_name = hashed_name.split('__')
     model = apps.get_model(app_label, model_name)
     obj = FlexSelectWidget.object_from_post(model, request.POST)
-    value_fk = getattr(obj, base_field_name)
+    value_fk = getattr(obj, base_field_name, None)
     admin_instance = admin.site._registry[obj.__class__]
     base_field = next(f for f in obj._meta.fields if f.name == base_field_name)
     widget = admin_instance.formfield_for_dbfield(
