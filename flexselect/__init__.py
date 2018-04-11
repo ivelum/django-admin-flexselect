@@ -8,7 +8,7 @@ if DJANGO_VERSION < (2, 0, 0):
     from django.core.urlresolvers import reverse, resolve
 else:
     from django.urls import reverse, resolve
-     
+
 from django.forms.widgets import Select, SelectMultiple
 from django.utils.encoding import smart_text as smart_unicode
 from django.utils.safestring import mark_safe
@@ -79,8 +79,11 @@ def details_from_instance(instance, widget):
 
 def object_from_request(request):
     try:
-        object_pk = resolve(request.path).args[0]
-    except IndexError:
+        if DJANGO_VERSION < (2, 0, 0):
+            object_pk = resolve(request.path).args[0]
+        else:
+            object_pk = resolve(request.path).kwargs['object_id']
+    except (IndexError, KeyError):
         raise ValueError(request.path)
     return model_from_request(request).objects.get(pk=object_pk)
 
@@ -220,4 +223,3 @@ class FlexSelectWidget(FlexBaseWidget, Select):
 class FlexSelectMultipleWidget(FlexBaseWidget, SelectMultiple):
     def __init__(self, *args, **kwargs):
         super(FlexSelectMultipleWidget, self).__init__(*args, **kwargs)
- 
