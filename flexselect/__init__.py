@@ -100,6 +100,8 @@ class FlexBaseWidget(object):
             googlecdn = "https://ajax.googleapis.com/ajax/libs"
             js.append('%s/jquery/1.6.1/jquery.min.js' % googlecdn)
             js.append('%s/jqueryui/1.8.13/jquery-ui.min.js' % googlecdn)
+        # Load RelatedObjectLookups.js before flexselect.js
+        js.append('admin/js/admin/RelatedObjectLookups.js')
         js.append('flexselect/js/flexselect.js')
 
     def __init__(self, base_field, modeladmin, request, choice_function=None,
