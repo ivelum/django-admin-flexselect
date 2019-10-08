@@ -74,7 +74,7 @@
       context: flexselect.getElement(event.data.baseField),
       success: event.data.success,
       error: function(data) {
-        alert("Something went wrong with flexselect.");
+        window.alert("Something went wrong with flexselect.");
       }
     });
   };
@@ -102,13 +102,13 @@
    * Overrides the original dismissAddAnotherPopup and triggers a change event on
    * the field after the popup has been added.
    */
-  var _dismissAddAnotherPopup = dismissAddAnotherPopup;
+  var _dismissAddAnotherPopup = window.dismissAddAnotherPopup;
 
-  dismissAddAnotherPopup = function(win, newId, newRepr) {
+  window.dismissAddAnotherPopup = function(win, newId, newRepr) {
     _dismissAddAnotherPopup(win, newId, newRepr);
-    $('#' + windowname_to_id(win.name)).trigger('change');
+    $('#' + window.windowname_to_id(win.name)).trigger('change');
   };
-  dismissAddAnotherPopup.original = _dismissAddAnotherPopup;
+  window.dismissAddAnotherPopup.original = _dismissAddAnotherPopup;
 
   // On Document.ready().
   $(function() {
