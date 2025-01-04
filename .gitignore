@@ -3,6 +3,6 @@ django_admin_flexselect.egg-info
 *.pyc
 virtualenv
 build
-test_project/test_app.sql
+test_project/test_app.sqlite3
 MANIFEST
 dist
