@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-admin-flexselect"
+version = "0.4.4"
+description = "Dynamic select fields for the Django Admin that just works."
+authors = [
+    {name = "Rune Kaagaard", email = "rumi.kg@gmail.com"}
+]
+license = {text = "Public Domain"}
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "django >= 1.0, <= 5.1",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: Django",
+    "Intended Audience :: Developers",
+    "License :: Public Domain",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[project.urls]
+Homepage = "https://github.com/runekaagaard/django-admin-flexselect"
+Source = "https://github.com/runekaagaard/django-admin-flexselect"
+Repository = "https://github.com/ivelum/django-admin-flexselect.git"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["flex*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+"flexselect" = [
+    "static/flexselect/js/flexselect.js",
+    "templates/admin/flexselect/flexselect.html",
+    "templates/admin/flexselect/flexselect_optgroups.html",
+]

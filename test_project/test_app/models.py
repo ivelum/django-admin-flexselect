@@ -12,7 +12,7 @@ class Company(m.Model):
         return self.name
 
 class CompanyContactPerson(m.Model):
-    company = m.ForeignKey(Company)
+    company = m.ForeignKey(Company, on_delete=m.CASCADE)
     name = m.CharField(max_length=80)
     email = m.EmailField()
     
@@ -20,16 +20,18 @@ class CompanyContactPerson(m.Model):
         return self.name
     
 class Client(m.Model):
-    company = m.ForeignKey(Company)
+    company = m.ForeignKey(Company, on_delete=m.CASCADE)
     name = m.CharField(max_length=80)
     
     def __unicode__(self):
         return self.name
      
 class Case(m.Model):
-    client = m.ForeignKey(Client)
-    company_contact_person = m.ForeignKey(CompanyContactPerson)
-    
+    client = m.ForeignKey(Client, on_delete=m.CASCADE)
+    company_contact_person = m.ForeignKey(
+        CompanyContactPerson, on_delete=m.CASCADE
+    )
+
     def clean(self):
         """
         Make sure that the company for client is the same as the company for

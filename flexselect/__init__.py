@@ -10,7 +10,10 @@ else:
     from django.urls import reverse, resolve
 
 from django.forms.widgets import Select, SelectMultiple
-from django.utils.encoding import smart_text as smart_unicode
+if DJANGO_VERSION < (4, 0, 0):
+    from django.utils.encoding import smart_text as smart_unicode
+else:
+    from django.utils.encoding import smart_str as smart_unicode
 from django.utils.safestring import mark_safe
 from django.conf import settings
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
@@ -90,7 +93,21 @@ def object_from_request(request):
 
 def model_from_request(request):
     resolved = resolve(request.path)
-    return apps.get_model(*resolved.url_name.split('_')[:2])
+    url_parts = resolved.url_name.split('_')
+    app_name = model_name = ''
+    for app in apps.app_configs.keys():
+        app_parts = app.split('_')
+        if app_parts == url_parts[:len(app_parts)]:
+            app_name = app
+            for m in apps.app_configs[app].models.keys():
+                if m == url_parts[len(app_parts)]:
+                    model_name = url_parts[len(app_parts)]
+                    break
+    if not (app_name and model_name):
+        raise ValueError(
+            f'Cannot resolve model name from request: {resolved.url_name}.',
+        )
+    return apps.get_model(app_label=app_name, model_name=model_name)
 
 
 class FlexBaseWidget(object):
