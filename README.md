@@ -185,4 +185,4 @@ https://docs.djangoproject.com/en/1.3/ref/contrib/staticfiles/.
 
 
 ## Test project ##
-The test project is compatible with django 4.0 - 5.1.
+The test project is compatible with django 4.0 - 5.2.

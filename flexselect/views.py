@@ -35,16 +35,10 @@ def field_changed(request):
         else:
             choices = choices_from_instance(obj, widget)
 
-        args = [[value_fk.pk if value_fk else None]]
-        if DJANGO_VERSION < (1, 10, 0):
-            args.insert(0, [])
-        if DJANGO_VERSION < (1, 11, 0):
-            options = Select(choices=choices).render_options(*args)
-        else:
-            # django 1.11 has introduced template rednering for widgets
-            widget.choices = choices
-            val = value_fk.pk if value_fk else None
-            options = widget.render_options_template(val, widget.attrs)
+        # django 1.11 has introduced template rendering for widgets
+        widget.choices = choices
+        val = value_fk.pk if value_fk else None
+        options = widget.render_options_template(val, widget.attrs)
     else:
         options = None
 

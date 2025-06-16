@@ -4,10 +4,7 @@ import json
 from django import VERSION as DJANGO_VERSION
 
 from django.apps import apps
-if DJANGO_VERSION < (2, 0, 0):
-    from django.core.urlresolvers import reverse, resolve
-else:
-    from django.urls import reverse, resolve
+from django.urls import reverse, resolve
 
 from django.forms.widgets import Select, SelectMultiple
 if DJANGO_VERSION < (4, 0, 0):
@@ -82,10 +79,7 @@ def details_from_instance(instance, widget):
 
 def object_from_request(request):
     try:
-        if DJANGO_VERSION < (2, 0, 0):
-            object_pk = resolve(request.path).args[0]
-        else:
-            object_pk = resolve(request.path).kwargs['object_id']
+        object_pk = resolve(request.path).kwargs['object_id']
     except (IndexError, KeyError):
         raise ValueError(request.path)
     return model_from_request(request).objects.get(pk=object_pk)
@@ -115,8 +109,13 @@ class FlexBaseWidget(object):
         js = []
         if FLEXSELECT['include_jquery']:
             googlecdn = "https://ajax.googleapis.com/ajax/libs"
-            js.append('%s/jquery/1.6.1/jquery.min.js' % googlecdn)
-            js.append('%s/jqueryui/1.8.13/jquery-ui.min.js' % googlecdn)
+            jq_ver = '1.6.1'
+            jqui_ver = '1.8.13'
+            if DJANGO_VERSION >= (5, 0):
+                jq_ver = '3.7.1'
+                jqui_ver = '1.14.1'
+            js.append(f'{googlecdn}/jquery/{jq_ver}/jquery.min.js')
+            js.append(f'{googlecdn}/jqueryui/{jqui_ver}/jquery-ui.min.js')
         # Load RelatedObjectLookups.js before flexselect.js
         js.append('admin/js/admin/RelatedObjectLookups.js')
         js.append('flexselect/js/flexselect.js')
